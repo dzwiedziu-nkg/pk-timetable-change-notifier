@@ -126,7 +126,7 @@ public class MainFragment extends Fragment {
         int index = stage - 1;
         goButton[index].setVisibility(url != null ? View.VISIBLE : View.GONE);
         if (date == null) {
-            degreeDateTextView[index].setText("please clicks \"Check now\"");
+            degreeDateTextView[index].setText(R.string.label_empty_degree_date);
         } else {
             degreeDateTextView[index].setText(DATE_FORMAT.format(date));
         }
@@ -134,17 +134,16 @@ public class MainFragment extends Fragment {
 
     public void setLastCheckedDate(Date date) {
         if (date == null) {
-            lastCheckedTextView.setText("never, please clicks \"Check now\"");
+            lastCheckedTextView.setText(R.string.label_empty_checked_date);
         } else {
             lastCheckedTextView.setText(DATE_TIME_FORMAT.format(date));
         }
     }
 
     public void setLastCheckedError(Date date, int type, String error) {
-        if (date != null) {
+        if (date != null && type != 0) {
             lastCheckedErrorDateTextView.setText(DATE_TIME_FORMAT.format(date));
-
-            lastCheckedErrorTextView.setText(error);
+            lastCheckedErrorTextView.setText(getResources().getStringArray(R.array.error_type_array)[type - 1] + "\n\n" + error);
         }
         lastCheckedErrorFrameLayout.setVisibility(date == null ? View.GONE : View.VISIBLE);
     }

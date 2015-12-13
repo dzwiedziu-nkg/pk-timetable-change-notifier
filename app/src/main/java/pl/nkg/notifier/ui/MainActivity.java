@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     }
 
     private void updateVersionInfo() {
-        CharSequence versionString = "Version";
+        CharSequence versionString = getString(R.string.label_version);
         versionTextView.setText(versionString + ": " + BuildConfig.VERSION_NAME + " (" + BUILD_DATE.format(new Date(BuildConfig.TIMESTAMP)) + ")");
     }
 

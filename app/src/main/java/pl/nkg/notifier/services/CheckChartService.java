@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -30,6 +32,8 @@ import pl.nkg.notifier.ui.MainActivity;
 
 public class CheckChartService extends IntentService {
 
+    private final static String PK_URL_STRING = "http://www.fmi.pk.edu.pl/?page=rozklady_zajec.php&nc";
+
     private final static String TAG = CheckChartService.class.getSimpleName();
     private final static URL PK_URL;
 
@@ -37,7 +41,7 @@ public class CheckChartService extends IntentService {
 
     static {
         try {
-            PK_URL = new URL("http://www.fmi.pk.edu.pl/?page=rozklady_zajec.php&nc");
+            PK_URL = new URL(PK_URL_STRING);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -61,6 +65,14 @@ public class CheckChartService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
+            if (!isOnline()) {
+                preferencesProvider.setPrefErrorType(1);
+                preferencesProvider.setPrefErrorDetails("");
+                notifyScheduleCheckError(1, "");
+                emitStatusUpdated(false);
+                return;
+            }
+
             try {
                 preferencesProvider.setPrefErrorType(0);
                 emitStatusUpdated(true);
@@ -76,14 +88,14 @@ public class CheckChartService extends IntentService {
                 cancelNotify(1);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to download file: " + PK_URL.toString(), e);
-                preferencesProvider.setPrefErrorType(1);
-                preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
-                notifyScheduleCheckError(1, e.getLocalizedMessage());
-            } catch (ParseException e) {
-                Log.e(TAG, "Unable to parse downloaded file: " + PK_URL.toString(), e);
                 preferencesProvider.setPrefErrorType(2);
                 preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
                 notifyScheduleCheckError(2, e.getLocalizedMessage());
+            } catch (ParseException e) {
+                Log.e(TAG, "Unable to parse downloaded file: " + PK_URL.toString(), e);
+                preferencesProvider.setPrefErrorType(3);
+                preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
+                notifyScheduleCheckError(3, e.getLocalizedMessage());
             } finally {
                 emitStatusUpdated(false);
             }
@@ -101,14 +113,14 @@ public class CheckChartService extends IntentService {
         boolean secondStageNotify = preferencesProvider.isPrefEnabled(2) && (!has || !oldParsedData.getSecondStage().equals(newParsedData.getSecondStage()));
 
         if (firstStageNotify || secondStageNotify) {
-            CharSequence title = "PK schedule was changed!";
+            CharSequence title = getString(R.string.notify_title_schedule_changed);
             CharSequence content = null;
             if (firstStageNotify && secondStageNotify) {
-                content = "Schedule for informatics I and II degree of part-time studies was changed.";
+                content = getString(R.string.notify_content_both_changed);
             } else if (firstStageNotify) {
-                content = "Schedule for informatics I degree of part-time studies was changed.";
+                content = getString(R.string.notify_content_degree_I_changed);
             } else {
-                content = "Schedule for informatics II degree of part-time studies was changed.";
+                content = getString(R.string.notify_content_degree_II_changed);
             }
             showNotify(title, content, R.drawable.ic_stat_changed, 0);
         }
@@ -120,14 +132,15 @@ public class CheckChartService extends IntentService {
             return;
         }
 
-        CharSequence title = "Unable to check that PK schedule was changed";
-        CharSequence content = "Error details: " + error;
-        showNotify(title, content, R.drawable.ic_stat_notification_sync_problem, 1);
+        CharSequence title = getString(R.string.notify_error_title);
+        String content = getResources().getStringArray(R.array.error_type_array)[type - 1];
+        CharSequence details = error.length() == 0 ? "" : "\n\n" + error;
+        showNotify(title, content + details, R.drawable.ic_stat_notification_sync_problem, 1);
     }
 
     private void notifyChecking(boolean visible) {
         if (visible) {
-            showNotify("Checking if schedule was changed...", "Please wait... if the schedule will be hanged I notify you", R.drawable.ic_stat_notification_sync, 2);
+            showNotify(getString(R.string.notify_title_checking), getString(R.string.notify_content_checking), R.drawable.ic_stat_notification_sync, 2);
         } else {
             cancelNotify(2);
         }
@@ -171,6 +184,12 @@ public class CheckChartService extends IntentService {
             connection.disconnect();
         }
 
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnected();
     }
 
     private static ParsedData fetchFromPreferences(PreferencesProvider preferencesProvider) {

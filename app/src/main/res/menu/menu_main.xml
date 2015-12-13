@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_check_now"
-        android:title="Check now"
+        android:title="@string/button_check_now"
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/ic_action_action_cached" />

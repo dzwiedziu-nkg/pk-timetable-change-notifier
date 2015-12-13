@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Informatics I degree updated date:" />
+                android:text="@string/label_degree_I_updated_date" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Informatics II degree updated date:" />
+                android:text="@string/label_degree_II_updated_date" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Last checked date:" />
+        android:text="@string/label_last_checked_date" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Date of last checked but error was occured:" />
+            android:text="@string/label_last_checked_but_error_date" />
 
         <TextView
             android:textColor="@color/colorError"
@@ -117,6 +117,7 @@
             android:minLines="1"
             android:singleLine="false"
             android:layout_height="wrap_content"
+            android:autoLink="web"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/lastCheckedErrorTextView" />
 
@@ -125,7 +126,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Check now"
+        android:text="@string/button_check_now"
         android:id="@+id/checkNowButton"
         android:layout_marginTop="@dimen/activity_horizontal_space"
         android:layout_gravity="center_horizontal" />
