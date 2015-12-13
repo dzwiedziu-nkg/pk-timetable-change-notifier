@@ -13,9 +13,9 @@
     <string name="label_empty_checked_date">never, please clicks \"Check now\"</string>
 
     <string name="pref_cat_checking">Notify about changes of:</string>
-    <string name="pref_title_degree_I">I degree</string>
+    <string name="pref_title_degree_I">I degree part-time studies</string>
     <string name="pref_description_degree_I">Schedule for: Informatics I degree on WFMiI</string>
-    <string name="pref_title_degree_II">II degree</string>
+    <string name="pref_title_degree_II">II degree part-time studies</string>
     <string name="pref_description_degree_II">Schedule for: Informatics II degree on WFMiI</string>
 
     <string-array name="error_type_array">
@@ -24,11 +24,11 @@
         <item>Unable to parse downloaded file. Please contact with author (nkg753@gmail.com) and wait for upgrade of this app.</item>
     </string-array>
 
-    <string name="notify_error_title">Unable to check if PK schedule was changed</string>
-    <string name="notify_title_schedule_changed">PK schedule was changed!</string>
+    <string name="notify_error_title">Unable to check if CUT schedule was changed</string>
+    <string name="notify_title_schedule_changed">CUT schedule was changed!</string>
     <string name="notify_content_both_changed">Schedule for informatics I and II degree of part-time studies was changed.</string>
     <string name="notify_content_degree_I_changed">Schedule for informatics I degree of part-time studies was changed.</string>
     <string name="notify_content_degree_II_changed">Schedule for informatics II degree of part-time studies was changed.</string>
     <string name="notify_title_checking">Checking if schedule was changed&#8230;</string>
-    <string name="notify_content_checking">Please wait&#8230; if the schedule will be hanged I notify you</string>
+    <string name="notify_content_checking">Please wait… if the schedule will be hanged I notify you.</string>
 </resources>
