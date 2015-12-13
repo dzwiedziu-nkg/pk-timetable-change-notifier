@@ -91,6 +91,7 @@ public class CheckChartService extends IntentService {
     }
 
     private void emitStatusUpdated(boolean pending) {
+        notifyChecking(pending);
         EventBus.getDefault().post(new StatusUpdatedEvent(pending));
     }
 
@@ -109,7 +110,7 @@ public class CheckChartService extends IntentService {
             } else {
                 content = "Schedule for informatics II degree of part-time studies was changed.";
             }
-            showNotify(title, content, R.drawable.ic_menu_refresh, 0);
+            showNotify(title, content, R.drawable.ic_stat_changed, 0);
         }
     }
 
@@ -121,7 +122,15 @@ public class CheckChartService extends IntentService {
 
         CharSequence title = "Unable to check that PK schedule was changed";
         CharSequence content = "Error details: " + error;
-        showNotify(title, content, R.drawable.ic_menu_refresh, 1);
+        showNotify(title, content, R.drawable.ic_stat_notification_sync_problem, 1);
+    }
+
+    private void notifyChecking(boolean visible) {
+        if (visible) {
+            showNotify("Checking if schedule was changed...", "Please wait... if the schedule will be hanged I notify you", R.drawable.ic_stat_notification_sync, 2);
+        } else {
+            cancelNotify(2);
+        }
     }
 
     private void showNotify(CharSequence title, CharSequence content, int icon, int id) {
