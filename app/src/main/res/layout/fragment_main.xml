@@ -32,11 +32,11 @@
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_action_file_file_download"
             android:id="@+id/goIButton"
-            android:layout_gravity="right" />
+            android:layout_gravity="right|center" />
 
     </FrameLayout>
 
@@ -67,11 +67,11 @@
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_action_file_file_download"
             android:id="@+id/goIIButton"
-            android:layout_gravity="right" />
+            android:layout_gravity="right|center" />
 
     </FrameLayout>
 
