@@ -12,7 +12,7 @@ import pl.nkg.notifier.receivers.AlarmReceiver;
 
 public class NotifierApplication extends Application {
 
-    private static final long REPEAT_TIME = 1000 * 15;
+    private static final long REPEAT_TIME = 1000 * 60 * 60 * 3;
 
     private PreferencesProvider preferencesProvider;
 
