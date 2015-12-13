@@ -167,8 +167,13 @@ public class CheckChartService extends IntentService {
                 .setAutoCancel(true);
 
         if (loud) {
-            builder.setVibrate(new long[]{MORSE_DOT, MORSE_SHORT_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DOT, MORSE_MEDIUM_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DOT, MORSE_SHORT_GAP, MORSE_DASH});
-            builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+            if (preferencesProvider.isPrefVibration()) {
+                builder.setVibrate(new long[]{MORSE_DOT, MORSE_SHORT_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DOT, MORSE_MEDIUM_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DOT, MORSE_SHORT_GAP, MORSE_DASH});
+            }
+
+            if (preferencesProvider.isPrefSound()) {
+                builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+            }
         }
 
         if (color != 0) {

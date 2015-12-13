@@ -15,4 +15,18 @@
             android:defaultValue="true" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/pref_cat_notify">
+        <CheckBoxPreference
+            android:key="vibration"
+            android:title="@string/pref_title_vibration"
+            android:summary="@string/pref_description_vibration"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="sound"
+            android:title="@string/pref_title_sound"
+            android:summary="@string/pref_description_sound"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

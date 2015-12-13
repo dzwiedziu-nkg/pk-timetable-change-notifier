@@ -29,4 +29,9 @@
         <item>Nie udało się ściągnąć grafiku ze strony PK. Być może strona jest tymczasowo niedostępna. Odczekaj chwilę i kliknij ponownie na \"Sprawdź teraz\".</item>
         <item>Błąd przetwarzania strony z grafikiem PK. Być może zmienił się układ strony. Powiadom o tym fakcie autora (nkg753@gmail.com) i poczekaj cierpliwie na aktualizację tej aplikacji.</item>
     </string-array>
+    <string name="pref_cat_notify">Sposoby powiadamiania:</string>
+    <string name="pref_title_vibration">Wibracja</string>
+    <string name="pref_title_sound">Dźwiek</string>
+    <string name="pref_description_vibration">Wibruje gdy wykryto aktualizację grafików</string>
+    <string name="pref_description_sound">Odgrywa dźwięk gdy wykryto aktualizację grafików</string>
 </resources>

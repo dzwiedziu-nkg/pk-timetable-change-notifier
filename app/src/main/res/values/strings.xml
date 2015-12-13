@@ -18,6 +18,12 @@
     <string name="pref_title_degree_II">II degree part-time studies</string>
     <string name="pref_description_degree_II">Schedule for: Informatics II degree on WFMiI</string>
 
+    <string name="pref_cat_notify">Type of notification:</string>
+    <string name="pref_title_vibration">Vibration</string>
+    <string name="pref_description_vibration">Vibrate when schedule was changed</string>
+    <string name="pref_title_sound">Sound</string>
+    <string name="pref_description_sound">Play notification sound when schedule was changed</string>
+
     <string-array name="error_type_array">
         <item>No internet connection. Please check your internet connection and try \"Check now\" again.</item>
         <item>Unable to download file, maybe CUT web page is temporary down. Please try \"Check now\" again later.</item>

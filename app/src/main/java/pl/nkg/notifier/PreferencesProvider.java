@@ -12,6 +12,8 @@ import java.util.Date;
 
 public class PreferencesProvider {
     public final static String PREF_ENABLED = "enabled";
+    public final static String PREF_VIBRATION = "vibration";
+    public final static String PREF_SOUND = "sound";
     public final static String PREF_HAS_LAST_CHECKED = "has";
     public final static String PREF_LAST_CHECKED_TIME = "checked";
     public final static String PREF_LAST_CHECKED_SUCCESS_TIME = "success";
@@ -40,6 +42,14 @@ public class PreferencesProvider {
 
     public void setPrefEnabled(int stage, boolean enabled) {
         apply(sharedPreferences.edit().putBoolean(PREF_ENABLED + "_" + stage, enabled));
+    }
+
+    public boolean isPrefVibration() {
+        return sharedPreferences.getBoolean(PREF_VIBRATION, true);
+    }
+
+    public boolean isPrefSound() {
+        return sharedPreferences.getBoolean(PREF_SOUND, true);
     }
 
     /**
