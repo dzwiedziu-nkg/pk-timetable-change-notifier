@@ -35,6 +35,8 @@
         <service
             android:name=".services.CheckChartService"
             android:exported="false" />
+
+        <receiver android:name=".services.AlarmReceiver" />
     </application>
 
 </manifest>

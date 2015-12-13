@@ -1,8 +1,12 @@
 package pl.nkg.notifier.services;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -17,10 +21,12 @@ import java.text.ParseException;
 import de.greenrobot.event.EventBus;
 import pl.nkg.notifier.NotifierApplication;
 import pl.nkg.notifier.PreferencesProvider;
+import pl.nkg.notifier.R;
 import pl.nkg.notifier.events.StatusUpdatedEvent;
 import pl.nkg.notifier.parser.ParsedData;
 import pl.nkg.notifier.parser.ParsedEntity;
 import pl.nkg.notifier.parser.WebParser;
+import pl.nkg.notifier.ui.MainActivity;
 
 public class CheckChartService extends IntentService {
 
@@ -56,6 +62,10 @@ public class CheckChartService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             try {
+                //FIXME: zmienic na notify i to jak wykryje zmiane
+                showNotify();
+                //Toast.makeText(getApplicationContext(), "Sprawdzanie grafika PK...", Toast.LENGTH_LONG).show();
+
                 preferencesProvider.setPrefErrorType(0);
                 emitStatusUpdated(true);
                 preferencesProvider.setPrefLastCheckedTime(System.currentTimeMillis());
@@ -94,6 +104,30 @@ public class CheckChartService extends IntentService {
         if (firstStageNotify || secondStageNotify) {
 
         }
+    }
+
+    private void showNotify() {
+        Intent intent = new Intent(this, MainActivity.class);
+// use System.currentTimeMillis() to have a unique ID for the pending intent
+        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+
+// build notification
+// the addAction re-use the same intent to keep the example short
+        Notification n = new NotificationCompat.Builder(this)
+                .setContentTitle("PK Schedule changed")
+                .setContentText("I detect that your schedule on PK was changed.")
+                .setSmallIcon(R.drawable.ic_menu_refresh)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+                /*.addAction(R.drawable.ic_menu_refresh, "Call", pIntent)
+                .addAction(R.drawable.ic_menu_refresh, "More", pIntent)
+                .addAction(R.drawable.ic_menu_refresh, "And more", pIntent)*/.build();
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, n);
     }
 
     private static ParsedData fetchPage(URL url) throws IOException, ParseException {
