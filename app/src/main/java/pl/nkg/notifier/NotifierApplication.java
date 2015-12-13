@@ -8,7 +8,7 @@ import android.content.Intent;
 
 import de.greenrobot.event.EventBus;
 import pl.nkg.notifier.events.StatusUpdatedEvent;
-import pl.nkg.notifier.services.AlarmReceiver;
+import pl.nkg.notifier.receivers.AlarmReceiver;
 
 public class NotifierApplication extends Application {
 

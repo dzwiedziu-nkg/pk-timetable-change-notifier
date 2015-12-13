@@ -1,8 +1,10 @@
-package pl.nkg.notifier.services;
+package pl.nkg.notifier.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import pl.nkg.notifier.services.CheckChartService;
 
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
