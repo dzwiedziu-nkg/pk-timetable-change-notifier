@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Notify about changes of:">
+        <CheckBoxPreference
+            android:key="enabled_1"
+            android:title="I degree"
+            android:summary="Schedule for: Informatics I degree"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="enabled_2"
+            android:title="II degree"
+            android:summary="Schedule for: Informatics II degree"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
