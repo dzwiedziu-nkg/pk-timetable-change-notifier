@@ -6,6 +6,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -30,14 +34,22 @@ import pl.nkg.notifier.ui.MainActivity;
 
 public class CheckChartService extends IntentService {
 
+    private final static String PK_URL_STRING = "http://www.fmi.pk.edu.pl/?page=rozklady_zajec.php&nc";
+
     private final static String TAG = CheckChartService.class.getSimpleName();
     private final static URL PK_URL;
+
+    private final static int MORSE_DOT = 200;
+    private final static int MORSE_DASH = 500;
+    private final static int MORSE_SHORT_GAP = 200;
+    private final static int MORSE_MEDIUM_GAP = 500;
+    private final static int MORSE_LONG_GAP = 1000;
 
     private PreferencesProvider preferencesProvider;
 
     static {
         try {
-            PK_URL = new URL("http://www.fmi.pk.edu.pl/?page=rozklady_zajec.php&nc");
+            PK_URL = new URL(PK_URL_STRING);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -61,6 +73,14 @@ public class CheckChartService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
+            if (!isOnline()) {
+                preferencesProvider.setPrefErrorType(1);
+                preferencesProvider.setPrefErrorDetails("");
+                notifyScheduleCheckError(1, "");
+                emitStatusUpdated(false);
+                return;
+            }
+
             try {
                 preferencesProvider.setPrefErrorType(0);
                 emitStatusUpdated(true);
@@ -76,14 +96,14 @@ public class CheckChartService extends IntentService {
                 cancelNotify(1);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to download file: " + PK_URL.toString(), e);
-                preferencesProvider.setPrefErrorType(1);
-                preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
-                notifyScheduleCheckError(1, e.getLocalizedMessage());
-            } catch (ParseException e) {
-                Log.e(TAG, "Unable to parse downloaded file: " + PK_URL.toString(), e);
                 preferencesProvider.setPrefErrorType(2);
                 preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
                 notifyScheduleCheckError(2, e.getLocalizedMessage());
+            } catch (ParseException e) {
+                Log.e(TAG, "Unable to parse downloaded file: " + PK_URL.toString(), e);
+                preferencesProvider.setPrefErrorType(3);
+                preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
+                notifyScheduleCheckError(3, e.getLocalizedMessage());
             } finally {
                 emitStatusUpdated(false);
             }
@@ -91,25 +111,26 @@ public class CheckChartService extends IntentService {
     }
 
     private void emitStatusUpdated(boolean pending) {
+        notifyChecking(pending);
         EventBus.getDefault().post(new StatusUpdatedEvent(pending));
     }
 
     private void notifyScheduleChanged(ParsedData oldParsedData, ParsedData newParsedData) {
         boolean has = preferencesProvider.isPrefHasLastChecked();
-        boolean firstStageNotify = preferencesProvider.isPrefEnabled(1) && (!has || !oldParsedData.getFirstStage().equals(newParsedData.getFirstStage()));
-        boolean secondStageNotify = preferencesProvider.isPrefEnabled(2) && (!has || !oldParsedData.getSecondStage().equals(newParsedData.getSecondStage()));
+        boolean firstStageNotify = preferencesProvider.isPrefEnabled(1) && (!has || !newParsedData.getFirstStage().equals(oldParsedData.getFirstStage()));
+        boolean secondStageNotify = preferencesProvider.isPrefEnabled(2) && (!has || !newParsedData.getSecondStage().equals(oldParsedData.getSecondStage()));
 
         if (firstStageNotify || secondStageNotify) {
-            CharSequence title = "PK schedule was changed!";
+            CharSequence title = getString(R.string.notify_title_schedule_changed);
             CharSequence content = null;
             if (firstStageNotify && secondStageNotify) {
-                content = "Schedule for informatics I and II degree of part-time studies was changed.";
+                content = getString(R.string.notify_content_both_changed);
             } else if (firstStageNotify) {
-                content = "Schedule for informatics I degree of part-time studies was changed.";
+                content = getString(R.string.notify_content_degree_I_changed);
             } else {
-                content = "Schedule for informatics II degree of part-time studies was changed.";
+                content = getString(R.string.notify_content_degree_II_changed);
             }
-            showNotify(title, content, R.drawable.ic_menu_refresh, 0);
+            showNotify(title, content, R.drawable.ic_stat_changed, 0, true, Color.BLUE);
         }
     }
 
@@ -119,23 +140,47 @@ public class CheckChartService extends IntentService {
             return;
         }
 
-        CharSequence title = "Unable to check that PK schedule was changed";
-        CharSequence content = "Error details: " + error;
-        showNotify(title, content, R.drawable.ic_menu_refresh, 1);
+        CharSequence title = getString(R.string.notify_error_title);
+        String content = getResources().getStringArray(R.array.error_type_array)[type - 1];
+        CharSequence details = error.length() == 0 ? "" : "\n\n" + error;
+        showNotify(title, content + details, R.drawable.ic_stat_notification_sync_problem, 1, false, Color.RED);
     }
 
-    private void showNotify(CharSequence title, CharSequence content, int icon, int id) {
+    private void notifyChecking(boolean visible) {
+        if (visible) {
+            showNotify(getString(R.string.notify_title_checking), getString(R.string.notify_content_checking), R.drawable.ic_stat_notification_sync, 2, false, 0);
+        } else {
+            cancelNotify(2);
+        }
+    }
+
+    private void showNotify(CharSequence title, CharSequence content, int icon, int id, boolean loud, int color) {
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
 
-        Notification n = new NotificationCompat.Builder(this)
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(content)
                 .setSmallIcon(icon)
                 .setContentIntent(pIntent)
-                .setAutoCancel(true)
-                .build();
+                .setAutoCancel(true);
 
+        if (loud) {
+            if (preferencesProvider.isPrefVibration()) {
+                builder.setVibrate(new long[]{MORSE_DOT, MORSE_SHORT_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DOT, MORSE_MEDIUM_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DOT, MORSE_SHORT_GAP, MORSE_DASH});
+            }
+
+            if (preferencesProvider.isPrefSound()) {
+                builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+            }
+        }
+
+        if (color != 0) {
+            builder.setLights(color, 3000, 3000);
+        }
+
+        Notification n = builder.build();
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -162,6 +207,12 @@ public class CheckChartService extends IntentService {
             connection.disconnect();
         }
 
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnected();
     }
 
     private static ParsedData fetchFromPreferences(PreferencesProvider preferencesProvider) {

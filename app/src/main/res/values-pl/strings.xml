@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PK powiadamiacz o nowym grafiku</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="button_check_now">Sprawdź teraz</string>
+    <string name="label_degree_II_updated_date">Informatyka II stopień ostatnia aktualizacja:</string>
+    <string name="label_degree_I_updated_date">Informatyka I stopień ostatnia aktualizacja:</string>
+    <string name="label_empty_checked_date">nigdy, kliknij \"Sprawdź teraz\"</string>
+    <string name="label_empty_degree_date">kliknij \"Sprawdź teraz\"</string>
+    <string name="label_last_checked_but_error_date">Data ostatniej próby sprawdzenia, zakończona niepowodzeniem:</string>
+    <string name="label_last_checked_date">Data ostatniego sprawdzenia:</string>
+    <string name="label_version">Wersja</string>
+    <string name="notify_content_both_changed">Grafik dla informatyki stopnia I i II studiów niestacjonarnych został zaktualizowany.</string>
+    <string name="notify_content_checking">Proszę czekać, trwa sprawdzanie… jeżeli się okaże, że grafik został zaktualizowany zostaniesz powiadomiony osobnym komunikatem.</string>
+    <string name="notify_content_degree_II_changed">Grafik dla informatyki stopnia II studiów niestacjonarnych został zaktualizowany.</string>
+    <string name="notify_content_degree_I_changed">Grafik dla informatyki stopnia I studiów niestacjonarnych został zaktualizowany.</string>
+    <string name="notify_error_title">Nie udało się sprawdzić czy grafik zajęć został zaktualizowany</string>
+    <string name="notify_title_checking">Trwa sprawdzanie, czy grafik zajęć uległ zmianie…</string>
+    <string name="notify_title_schedule_changed">Grafik zajęć na PK został zaktualizowany!</string>
+    <string name="pref_cat_checking">Powiadamiaj o aktualizacji:</string>
+    <string name="pref_description_degree_I">Grafik dla informatyki I stopnia na WFMiI</string>
+    <string name="pref_description_degree_II">Grafik dla informatyki II stopnia na WFMiI</string>
+    <string name="pref_title_degree_I">I stopień studiów niestacjonarnych</string>
+    <string name="pref_title_degree_II">II stopień studiów niestacjonarnych</string>
+    <string name="title_activity_main">Aktualizacje grafików PK</string>
+
+    <string-array name="error_type_array">
+        <item>Brak połączenia z internetm. Nawiąż połączenie i kliknij ponownie na \"Sprawdź teraz\".</item>
+        <item>Nie udało się ściągnąć grafiku ze strony PK. Być może strona jest tymczasowo niedostępna. Odczekaj chwilę i kliknij ponownie na \"Sprawdź teraz\".</item>
+        <item>Błąd przetwarzania strony z grafikiem PK. Być może zmienił się układ strony. Powiadom o tym fakcie autora (nkg753@gmail.com) i poczekaj cierpliwie na aktualizację tej aplikacji.</item>
+    </string-array>
+    <string name="pref_cat_notify">Sposoby powiadamiania:</string>
+    <string name="pref_title_vibration">Wibracja</string>
+    <string name="pref_title_sound">Dźwiek</string>
+    <string name="pref_description_vibration">Wibruje gdy wykryto aktualizację grafików</string>
+    <string name="pref_description_sound">Odgrywa dźwięk gdy wykryto aktualizację grafików</string>
+</resources>

@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Informatics I degree updated date:" />
+                android:text="@string/label_degree_I_updated_date" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,11 +32,11 @@
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_action_file_file_download"
             android:id="@+id/goIButton"
-            android:layout_gravity="right" />
+            android:layout_gravity="right|center" />
 
     </FrameLayout>
 
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Informatics II degree updated date:" />
+                android:text="@string/label_degree_II_updated_date" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,27 +67,20 @@
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_action_file_file_download"
             android:id="@+id/goIIButton"
-            android:layout_gravity="right" />
+            android:layout_gravity="right|center" />
 
     </FrameLayout>
 
-    <!--
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Active"
-            android:id="@+id/checkBox" />
-    -->
     <TextView
         android:layout_marginTop="@dimen/activity_horizontal_space"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Last checked date:" />
+        android:text="@string/label_last_checked_date" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -96,49 +89,44 @@
         android:text="Medium Text"
         android:id="@+id/lastCheckedTextView" />
 
-    <FrameLayout
+    <LinearLayout
+        android:layout_marginTop="@dimen/activity_horizontal_space"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_space"
-        android:id="@+id/lastCheckedErrorFrameLayout">
+        android:id="@+id/lastCheckedErrorLinearLayout">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center">
-
-            <TextView
-                android:textColor="@color/colorError"
-                android:layout_marginTop="@dimen/activity_horizontal_space"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Date of last checked but error was occured:" />
-
-            <TextView
-                android:textColor="@color/colorError"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
-                android:id="@+id/lastCheckedErrorDateTextView" />
-
-        </LinearLayout>
-
-        <Button
+        <TextView
+            android:textColor="@color/colorError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Details"
-            android:id="@+id/errorInfoButton"
-            android:layout_gravity="right" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/label_last_checked_but_error_date" />
 
-    </FrameLayout>
+        <TextView
+            android:textColor="@color/colorError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/lastCheckedErrorDateTextView" />
+
+        <TextView
+            android:textColor="@color/colorError"
+            android:layout_width="match_parent"
+            android:minLines="1"
+            android:singleLine="false"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/lastCheckedErrorTextView" />
+
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Check now"
+        android:text="@string/button_check_now"
         android:id="@+id/checkNowButton"
         android:layout_marginTop="@dimen/activity_horizontal_space"
         android:layout_gravity="center_horizontal" />

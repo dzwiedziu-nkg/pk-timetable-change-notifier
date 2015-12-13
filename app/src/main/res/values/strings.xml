@@ -1,5 +1,40 @@
 <resources>
-    <string name="app_name">PK Schedule Change Notifier</string>
-    <string name="title_activity_main">PK Schedule Change Notifier</string>
+    <string name="app_name">CUT Schedule Change Notifier</string>
+    <string name="title_activity_main">CUT Schedule Change Notifier</string>
+
     <string name="action_settings">Settings</string>
+    <string name="label_degree_I_updated_date">Informatics I degree updated date:</string>
+    <string name="label_degree_II_updated_date">Informatics II degree updated date:</string>
+    <string name="label_last_checked_date">Last checked date:</string>
+    <string name="label_last_checked_but_error_date">Date of last checked but error was occurred:</string>
+    <string name="button_check_now">Check now</string>
+    <string name="label_version">Version</string>
+    <string name="label_empty_degree_date">please clicks \"Check now\"</string>
+    <string name="label_empty_checked_date">never, please clicks \"Check now\"</string>
+
+    <string name="pref_cat_checking">Notify about changes of:</string>
+    <string name="pref_title_degree_I">I degree part-time studies</string>
+    <string name="pref_description_degree_I">Schedule for: Informatics I degree on WFMiI</string>
+    <string name="pref_title_degree_II">II degree part-time studies</string>
+    <string name="pref_description_degree_II">Schedule for: Informatics II degree on WFMiI</string>
+
+    <string name="pref_cat_notify">Type of notification:</string>
+    <string name="pref_title_vibration">Vibration</string>
+    <string name="pref_description_vibration">Vibrate when schedule was changed</string>
+    <string name="pref_title_sound">Sound</string>
+    <string name="pref_description_sound">Play notification sound when schedule was changed</string>
+
+    <string-array name="error_type_array">
+        <item>No internet connection. Please check your internet connection and try \"Check now\" again.</item>
+        <item>Unable to download file, maybe CUT web page is temporary down. Please try \"Check now\" again later.</item>
+        <item>Unable to parse downloaded file. Please contact with author (nkg753@gmail.com) and wait for upgrade of this app.</item>
+    </string-array>
+
+    <string name="notify_error_title">Unable to check if CUT schedule was changed</string>
+    <string name="notify_title_schedule_changed">CUT schedule was changed!</string>
+    <string name="notify_content_both_changed">Schedule for informatics I and II degree of part-time studies was changed.</string>
+    <string name="notify_content_degree_I_changed">Schedule for informatics I degree of part-time studies was changed.</string>
+    <string name="notify_content_degree_II_changed">Schedule for informatics II degree of part-time studies was changed.</string>
+    <string name="notify_title_checking">Checking if schedule was changed&#8230;</string>
+    <string name="notify_content_checking">Please wait… if the schedule will be hanged I notify you.</string>
 </resources>

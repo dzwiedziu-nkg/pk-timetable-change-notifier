@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
+import pl.nkg.notifier.BuildConfig;
 import pl.nkg.notifier.NotifierApplication;
 import pl.nkg.notifier.PreferencesProvider;
 import pl.nkg.notifier.R;
@@ -20,8 +24,11 @@ import static pl.nkg.notifier.PreferencesProvider.longToDateOrNull;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
 
+    private final static SimpleDateFormat BUILD_DATE = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+
     private MainFragment fragment;
     private NotifierApplication application;
+    private TextView versionTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,13 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         application = (NotifierApplication) getApplication();
         setContentView(R.layout.activity_main);
         fragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        versionTextView = (TextView) findViewById(R.id.versionTextView);
+        updateVersionInfo();
+    }
+
+    private void updateVersionInfo() {
+        CharSequence versionString = getString(R.string.label_version);
+        versionTextView.setText(versionString + ": " + BuildConfig.VERSION_NAME + " (" + BUILD_DATE.format(new Date(BuildConfig.TIMESTAMP)) + ")");
     }
 
 
@@ -62,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         super.onResume();
         update();
         EventBus.getDefault().register(this);
+        onClickCheckNow();
     }
 
     @Override
@@ -73,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     private void update() {
         PreferencesProvider preferencesProvider = application.getPreferencesProvider();
         fragment.setLastCheckedDate(longToDateOrNull(preferencesProvider.getPrefLastCheckedSuccessTime()));
-        fragment.setLastCheckedErrorDate(preferencesProvider.getPrefErrorType() == 0 ? null : new Date(preferencesProvider.getPrefLastCheckedTime()));
+        fragment.setLastCheckedError(preferencesProvider.getPrefErrorType() == 0 ? null : new Date(preferencesProvider.getPrefLastCheckedTime()), preferencesProvider.getPrefErrorType(), preferencesProvider.getPrefErrorDetails());
         fragment.setStageTimetableChanged(1, preferencesProvider.getPrefLastChangedDate(1), preferencesProvider.getPrefLastCheckedUrl(1));
         fragment.setStageTimetableChanged(2, preferencesProvider.getPrefLastChangedDate(2), preferencesProvider.getPrefLastCheckedUrl(2));
         fragment.setPendingStatus(application.isPending());
@@ -84,15 +99,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     }
 
     @Override
-    public void onClickChangedKnown() {
-    }
-
-    @Override
-    public void onClickErrorKnown() {
-
-    }
-
-    @Override
     public void onClickCheckNow() {
         CheckChartService.startService(this);
     }
@@ -100,10 +106,5 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     @Override
     public void onClickTimetableURL(int stage) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(application.getPreferencesProvider().getPrefLastCheckedUrl(stage).toString())));
-    }
-
-    @Override
-    public void onClickErrorDetail() {
-
     }
 }

@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,9 +31,9 @@ public class MainFragment extends Fragment {
     private TextView lastCheckedTextView;
 
     private TextView lastCheckedErrorDateTextView;
-    private Button errorInfoButton;
+    private TextView lastCheckedErrorTextView;
 
-    private FrameLayout lastCheckedErrorFrameLayout;
+    private LinearLayout lastCheckedErrorFrameLayout;
 
     private Button checkNowButton;
     private ProgressBar progressBar;
@@ -61,10 +61,10 @@ public class MainFragment extends Fragment {
         lastCheckedTextView = (TextView) view.findViewById(R.id.lastCheckedTextView);
 
         lastCheckedErrorDateTextView = (TextView) view.findViewById(R.id.lastCheckedErrorDateTextView);
-        errorInfoButton = (Button) view.findViewById(R.id.errorInfoButton);
 
-        lastCheckedErrorFrameLayout = (FrameLayout) view.findViewById(R.id.lastCheckedErrorFrameLayout);
+        lastCheckedErrorFrameLayout = (LinearLayout) view.findViewById(R.id.lastCheckedErrorLinearLayout);
         lastCheckedErrorDateTextView = (TextView) view.findViewById(R.id.lastCheckedErrorDateTextView);
+        lastCheckedErrorTextView = (TextView) view.findViewById(R.id.lastCheckedErrorTextView);
 
         checkNowButton = (Button) view.findViewById(R.id.checkNowButton);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -83,13 +83,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        errorInfoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hangClickErrorDetail();
-            }
-        });
-
         checkNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,18 +91,6 @@ public class MainFragment extends Fragment {
         });
 
         return view;
-    }
-
-    public void hangClickChangedKnown() {
-        if (listener != null) {
-            listener.onClickChangedKnown();
-        }
-    }
-
-    public void hangClickErrorKnown() {
-        if (listener != null) {
-            listener.onClickErrorKnown();
-        }
     }
 
     public void hangClickCheckNow() {
@@ -121,12 +102,6 @@ public class MainFragment extends Fragment {
     private void hangClickTimetableURL(int stage) {
         if (listener != null) {
             listener.onClickTimetableURL(stage);
-        }
-    }
-
-    public void hangClickErrorDetail() {
-        if (listener != null) {
-            listener.onClickErrorDetail();
         }
     }
 
@@ -151,7 +126,7 @@ public class MainFragment extends Fragment {
         int index = stage - 1;
         goButton[index].setVisibility(url != null ? View.VISIBLE : View.GONE);
         if (date == null) {
-            degreeDateTextView[index].setText("please clicks \"Check now\"");
+            degreeDateTextView[index].setText(R.string.label_empty_degree_date);
         } else {
             degreeDateTextView[index].setText(DATE_FORMAT.format(date));
         }
@@ -159,15 +134,16 @@ public class MainFragment extends Fragment {
 
     public void setLastCheckedDate(Date date) {
         if (date == null) {
-            lastCheckedTextView.setText("never, please clicks \"Check now\"");
+            lastCheckedTextView.setText(R.string.label_empty_checked_date);
         } else {
             lastCheckedTextView.setText(DATE_TIME_FORMAT.format(date));
         }
     }
 
-    public void setLastCheckedErrorDate(Date date) {
-        if (date != null) {
+    public void setLastCheckedError(Date date, int type, String error) {
+        if (date != null && type != 0) {
             lastCheckedErrorDateTextView.setText(DATE_TIME_FORMAT.format(date));
+            lastCheckedErrorTextView.setText(getResources().getStringArray(R.array.error_type_array)[type - 1] + "\n\n" + error);
         }
         lastCheckedErrorFrameLayout.setVisibility(date == null ? View.GONE : View.VISIBLE);
     }
@@ -178,14 +154,8 @@ public class MainFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        void onClickChangedKnown();
-
-        void onClickErrorKnown();
-
         void onClickCheckNow();
 
         void onClickTimetableURL(int stage);
-
-        void onClickErrorDetail();
     }
 }

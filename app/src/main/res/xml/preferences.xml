@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Notify about changes of:">
+    <PreferenceCategory android:title="@string/pref_cat_checking">
         <CheckBoxPreference
             android:key="enabled_1"
-            android:title="I degree"
-            android:summary="Schedule for: Informatics I degree"
+            android:title="@string/pref_title_degree_I"
+            android:summary="@string/pref_description_degree_I"
             android:defaultValue="true" />
 
         <CheckBoxPreference
             android:key="enabled_2"
-            android:title="II degree"
-            android:summary="Schedule for: Informatics II degree"
+            android:title="@string/pref_title_degree_II"
+            android:summary="@string/pref_description_degree_II"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_cat_notify">
+        <CheckBoxPreference
+            android:key="vibration"
+            android:title="@string/pref_title_vibration"
+            android:summary="@string/pref_description_vibration"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="sound"
+            android:title="@string/pref_title_sound"
+            android:summary="@string/pref_description_sound"
             android:defaultValue="true" />
     </PreferenceCategory>
 
