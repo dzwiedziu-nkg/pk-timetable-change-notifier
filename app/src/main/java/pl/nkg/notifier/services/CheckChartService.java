@@ -6,9 +6,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -37,6 +38,12 @@ public class CheckChartService extends IntentService {
 
     private final static String TAG = CheckChartService.class.getSimpleName();
     private final static URL PK_URL;
+
+    private final static int MORSE_DOT = 200;
+    private final static int MORSE_DASH = 500;
+    private final static int MORSE_SHORT_GAP = 200;
+    private final static int MORSE_MEDIUM_GAP = 500;
+    private final static int MORSE_LONG_GAP = 1000;
 
     private PreferencesProvider preferencesProvider;
 
@@ -123,19 +130,8 @@ public class CheckChartService extends IntentService {
             } else {
                 content = getString(R.string.notify_content_degree_II_changed);
             }
-            showNotify(title, content, R.drawable.ic_stat_changed, 0);
-
-            vibrateNotify();
-            soundNotify();
+            showNotify(title, content, R.drawable.ic_stat_changed, 0, true, Color.BLUE);
         }
-    }
-
-    private void vibrateNotify() {
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(3000);
-    }
-
-    private void soundNotify() {
     }
 
     private void notifyScheduleCheckError(int type, String error) {
@@ -147,29 +143,39 @@ public class CheckChartService extends IntentService {
         CharSequence title = getString(R.string.notify_error_title);
         String content = getResources().getStringArray(R.array.error_type_array)[type - 1];
         CharSequence details = error.length() == 0 ? "" : "\n\n" + error;
-        showNotify(title, content + details, R.drawable.ic_stat_notification_sync_problem, 1);
+        showNotify(title, content + details, R.drawable.ic_stat_notification_sync_problem, 1, false, Color.RED);
     }
 
     private void notifyChecking(boolean visible) {
         if (visible) {
-            showNotify(getString(R.string.notify_title_checking), getString(R.string.notify_content_checking), R.drawable.ic_stat_notification_sync, 2);
+            showNotify(getString(R.string.notify_title_checking), getString(R.string.notify_content_checking), R.drawable.ic_stat_notification_sync, 2, false, 0);
         } else {
             cancelNotify(2);
         }
     }
 
-    private void showNotify(CharSequence title, CharSequence content, int icon, int id) {
+    private void showNotify(CharSequence title, CharSequence content, int icon, int id, boolean loud, int color) {
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
 
-        Notification n = new NotificationCompat.Builder(this)
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(content)
                 .setSmallIcon(icon)
                 .setContentIntent(pIntent)
-                .setAutoCancel(true)
-                .build();
+                .setAutoCancel(true);
 
+        if (loud) {
+            builder.setVibrate(new long[]{MORSE_DOT, MORSE_SHORT_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DOT, MORSE_MEDIUM_GAP, MORSE_DASH, MORSE_SHORT_GAP, MORSE_DOT, MORSE_SHORT_GAP, MORSE_DASH});
+            builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        }
+
+        if (color != 0) {
+            builder.setLights(color, 3000, 3000);
+        }
+
+        Notification n = builder.build();
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
