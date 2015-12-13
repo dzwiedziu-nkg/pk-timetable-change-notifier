@@ -50,9 +50,6 @@ public class WebParser {
         Pattern p = Pattern.compile("a href=\"([^\"]+)\">.*?(\\d{2}-\\d{2}-\\d{4})");
         Matcher m = p.matcher(line);
         if (m.find()) {
-            String a = m.group(1);
-            String b = m.group(2);
-
             parsedEntity.setUrl(new URL(m.group(1)));
             parsedEntity.setDate(DATE_FORMAT.parse(m.group(2)));
         }

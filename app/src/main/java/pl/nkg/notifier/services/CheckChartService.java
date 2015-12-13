@@ -62,10 +62,6 @@ public class CheckChartService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             try {
-                //FIXME: zmienic na notify i to jak wykryje zmiane
-                showNotify();
-                //Toast.makeText(getApplicationContext(), "Sprawdzanie grafika PK...", Toast.LENGTH_LONG).show();
-
                 preferencesProvider.setPrefErrorType(0);
                 emitStatusUpdated(true);
                 preferencesProvider.setPrefLastCheckedTime(System.currentTimeMillis());
@@ -73,21 +69,23 @@ public class CheckChartService extends IntentService {
                 ParsedData oldParsedData = fetchFromPreferences(preferencesProvider);
                 if (!newParsedData.equals(oldParsedData)) {
                     storeChanged(preferencesProvider, newParsedData);
-                    notifyChartChanged(oldParsedData, newParsedData);
+                    notifyScheduleChanged(oldParsedData, newParsedData);
                 } else {
                     preferencesProvider.setPrefLastCheckedSuccessTime(System.currentTimeMillis());
                 }
+                cancelNotify(1);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to download file: " + PK_URL.toString(), e);
                 preferencesProvider.setPrefErrorType(1);
                 preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
+                notifyScheduleCheckError(1, e.getLocalizedMessage());
             } catch (ParseException e) {
                 Log.e(TAG, "Unable to parse downloaded file: " + PK_URL.toString(), e);
                 preferencesProvider.setPrefErrorType(2);
                 preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
+                notifyScheduleCheckError(2, e.getLocalizedMessage());
             } finally {
                 emitStatusUpdated(false);
-
             }
         }
     }
@@ -96,38 +94,58 @@ public class CheckChartService extends IntentService {
         EventBus.getDefault().post(new StatusUpdatedEvent(pending));
     }
 
-    private void notifyChartChanged(ParsedData oldParsedData, ParsedData newParsedData) {
+    private void notifyScheduleChanged(ParsedData oldParsedData, ParsedData newParsedData) {
         boolean has = preferencesProvider.isPrefHasLastChecked();
         boolean firstStageNotify = preferencesProvider.isPrefEnabled(1) && (!has || !oldParsedData.getFirstStage().equals(newParsedData.getFirstStage()));
         boolean secondStageNotify = preferencesProvider.isPrefEnabled(2) && (!has || !oldParsedData.getSecondStage().equals(newParsedData.getSecondStage()));
 
         if (firstStageNotify || secondStageNotify) {
-
+            CharSequence title = "PK schedule was changed!";
+            CharSequence content = null;
+            if (firstStageNotify && secondStageNotify) {
+                content = "Schedule for informatics I and II degree of part-time studies was changed.";
+            } else if (firstStageNotify) {
+                content = "Schedule for informatics I degree of part-time studies was changed.";
+            } else {
+                content = "Schedule for informatics II degree of part-time studies was changed.";
+            }
+            showNotify(title, content, R.drawable.ic_menu_refresh, 0);
         }
     }
 
-    private void showNotify() {
+    private void notifyScheduleCheckError(int type, String error) {
+        if (type == 0) {
+            cancelNotify(1);
+            return;
+        }
+
+        CharSequence title = "Unable to check that PK schedule was changed";
+        CharSequence content = "Error details: " + error;
+        showNotify(title, content, R.drawable.ic_menu_refresh, 1);
+    }
+
+    private void showNotify(CharSequence title, CharSequence content, int icon, int id) {
         Intent intent = new Intent(this, MainActivity.class);
-// use System.currentTimeMillis() to have a unique ID for the pending intent
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
 
-// build notification
-// the addAction re-use the same intent to keep the example short
         Notification n = new NotificationCompat.Builder(this)
-                .setContentTitle("PK Schedule changed")
-                .setContentText("I detect that your schedule on PK was changed.")
-                .setSmallIcon(R.drawable.ic_menu_refresh)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setSmallIcon(icon)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
-                /*.addAction(R.drawable.ic_menu_refresh, "Call", pIntent)
-                .addAction(R.drawable.ic_menu_refresh, "More", pIntent)
-                .addAction(R.drawable.ic_menu_refresh, "And more", pIntent)*/.build();
+                .build();
 
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, n);
+        notificationManager.notify(id, n);
+    }
+
+    private void cancelNotify(int id) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(id);
     }
 
     private static ParsedData fetchPage(URL url) throws IOException, ParseException {
