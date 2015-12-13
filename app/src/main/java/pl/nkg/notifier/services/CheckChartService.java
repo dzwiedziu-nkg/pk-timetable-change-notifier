@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -123,7 +124,18 @@ public class CheckChartService extends IntentService {
                 content = getString(R.string.notify_content_degree_II_changed);
             }
             showNotify(title, content, R.drawable.ic_stat_changed, 0);
+
+            vibrateNotify();
+            soundNotify();
         }
+    }
+
+    private void vibrateNotify() {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(3000);
+    }
+
+    private void soundNotify() {
     }
 
     private void notifyScheduleCheckError(int type, String error) {
