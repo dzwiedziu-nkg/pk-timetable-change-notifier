@@ -109,8 +109,8 @@ public class CheckChartService extends IntentService {
 
     private void notifyScheduleChanged(ParsedData oldParsedData, ParsedData newParsedData) {
         boolean has = preferencesProvider.isPrefHasLastChecked();
-        boolean firstStageNotify = preferencesProvider.isPrefEnabled(1) && (!has || !oldParsedData.getFirstStage().equals(newParsedData.getFirstStage()));
-        boolean secondStageNotify = preferencesProvider.isPrefEnabled(2) && (!has || !oldParsedData.getSecondStage().equals(newParsedData.getSecondStage()));
+        boolean firstStageNotify = preferencesProvider.isPrefEnabled(1) && (!has || !newParsedData.getFirstStage().equals(oldParsedData.getFirstStage()));
+        boolean secondStageNotify = preferencesProvider.isPrefEnabled(2) && (!has || !newParsedData.getSecondStage().equals(oldParsedData.getSecondStage()));
 
         if (firstStageNotify || secondStageNotify) {
             CharSequence title = getString(R.string.notify_title_schedule_changed);
