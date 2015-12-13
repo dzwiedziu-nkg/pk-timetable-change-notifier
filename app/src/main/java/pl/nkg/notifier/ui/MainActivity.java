@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.Date;
 
@@ -27,6 +29,32 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         application = (NotifierApplication) getApplication();
         setContentView(R.layout.activity_main);
         fragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        Intent intent;
+
+        switch (id) {
+            case R.id.action_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.action_check_now:
+                onClickCheckNow();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
