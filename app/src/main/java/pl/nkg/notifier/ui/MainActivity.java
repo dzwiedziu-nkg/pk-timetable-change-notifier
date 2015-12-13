@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     private void update() {
         PreferencesProvider preferencesProvider = application.getPreferencesProvider();
         fragment.setLastCheckedDate(longToDateOrNull(preferencesProvider.getPrefLastCheckedSuccessTime()));
-        fragment.setLastCheckedErrorDate(preferencesProvider.getPrefErrorType() == 0 ? null : new Date(preferencesProvider.getPrefLastCheckedTime()));
+        fragment.setLastCheckedError(preferencesProvider.getPrefErrorType() == 0 ? null : new Date(preferencesProvider.getPrefLastCheckedTime()), preferencesProvider.getPrefErrorType(), preferencesProvider.getPrefErrorDetails());
         fragment.setStageTimetableChanged(1, preferencesProvider.getPrefLastChangedDate(1), preferencesProvider.getPrefLastCheckedUrl(1));
         fragment.setStageTimetableChanged(2, preferencesProvider.getPrefLastChangedDate(2), preferencesProvider.getPrefLastCheckedUrl(2));
         fragment.setPendingStatus(application.isPending());
