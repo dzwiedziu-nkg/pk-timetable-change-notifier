@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         super.onResume();
         update();
         EventBus.getDefault().register(this);
+        onClickCheckNow();
     }
 
     @Override
