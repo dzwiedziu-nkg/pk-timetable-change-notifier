@@ -117,7 +117,7 @@
             android:minLines="1"
             android:singleLine="false"
             android:layout_height="wrap_content"
-            android:autoLink="web"
+            android:autoLink="web|email"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/lastCheckedErrorTextView" />
 

@@ -23,7 +23,7 @@ public class WebParser {
         ParsedData parsedData = new ParsedData();
         int done = 0;
 
-        while ((line = reader.readLine()) != null || done != 3) {
+        while ((line = reader.readLine()) != null && done != 3) {
             switch (automaton) {
                 case 0:
                     if (line.contains(PARSE_START_TAG)) {

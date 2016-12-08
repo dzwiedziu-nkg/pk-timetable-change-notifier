@@ -40,4 +40,8 @@ public class ParsedData {
         result = 31 * result + (secondStage != null ? secondStage.hashCode() : 0);
         return result;
     }
+
+    public boolean validate() {
+        return firstStage != null && secondStage != null && firstStage.validate() && secondStage.validate();
+    }
 }

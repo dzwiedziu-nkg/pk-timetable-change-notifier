@@ -27,7 +27,8 @@
     <string-array name="error_type_array">
         <item>No internet connection. Please check your internet connection and try \"Check now\" again.</item>
         <item>Unable to download file, maybe CUT web page is temporary down. Please try \"Check now\" again later.</item>
-        <item>Unable to parse downloaded file. Please contact with author (nkg753@gmail.com) and wait for upgrade of this app.</item>
+        <item>Unable to parse downloaded file. Please contact with author (<a href="mailto:nkg753@gmail.com">nkg753@gmail.com</a>) and wait for upgrade of this app.</item>
+        <item>You must unlock access to internet. Usually You must: open browser and try to open a web. You will see provider website instead, so follow the instructions.</item>
     </string-array>
 
     <string name="notify_error_title">Unable to check if CUT schedule was changed</string>

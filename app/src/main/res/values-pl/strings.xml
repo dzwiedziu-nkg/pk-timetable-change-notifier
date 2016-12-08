@@ -27,7 +27,8 @@
     <string-array name="error_type_array">
         <item>Brak połączenia z internetm. Nawiąż połączenie i kliknij ponownie na \"Sprawdź teraz\".</item>
         <item>Nie udało się ściągnąć grafiku ze strony PK. Być może strona jest tymczasowo niedostępna. Odczekaj chwilę i kliknij ponownie na \"Sprawdź teraz\".</item>
-        <item>Błąd przetwarzania strony z grafikiem PK. Być może zmienił się układ strony. Powiadom o tym fakcie autora (nkg753@gmail.com) i poczekaj cierpliwie na aktualizację tej aplikacji.</item>
+        <item>Błąd przetwarzania strony z grafikiem PK. Być może zmienił się układ strony. Powiadom o tym fakcie autora (<a href="mailto:nkg753@gmail.com">nkg753@gmail.com</a>) i poczekaj cierpliwie na aktualizację tej aplikacji.</item>
+        <item>Musisz odblokować swój dostęp do internetu. Zazwyczaj trzeba zrobić tak: otworzyć przeglądarkę i spróbować wejść na dowolną stronę. Zamiast tej strony pojawi się strona operatora dostępu do internetu, postępuj według instrukcji na tej stronie.</item>
     </string-array>
     <string name="pref_cat_notify">Sposoby powiadamiania:</string>
     <string name="pref_title_vibration">Wibracja</string>

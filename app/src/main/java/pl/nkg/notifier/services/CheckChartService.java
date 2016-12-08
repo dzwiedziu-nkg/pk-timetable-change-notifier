@@ -36,6 +36,8 @@ import pl.nkg.notifier.ui.MainActivity;
 public class CheckChartService extends IntentService {
 
     private final static String PK_URL_STRING = "http://www.fmi.pk.edu.pl/?page=rozklady_zajec.php&nc";
+    private final static String TEST_URL_STRING = "http://mars.iti.pk.edu.pl/~nkg/connection-test.txt";
+    private final static String TEST_STRING = "is connected :) hlehlehle";
 
     private final static String TAG = CheckChartService.class.getSimpleName();
     private final static URL PK_URL;
@@ -88,13 +90,25 @@ public class CheckChartService extends IntentService {
                 preferencesProvider.setPrefLastCheckedTime(System.currentTimeMillis());
                 ParsedData newParsedData = fetchPage(PK_URL);
                 ParsedData oldParsedData = fetchFromPreferences(preferencesProvider);
-                if (!newParsedData.equals(oldParsedData)) {
-                    storeChanged(preferencesProvider, newParsedData);
-                    notifyScheduleChanged(oldParsedData, newParsedData);
+
+                if (newParsedData.validate()) {
+                    if (!newParsedData.equals(oldParsedData)) {
+                        storeChanged(preferencesProvider, newParsedData);
+                        notifyScheduleChanged(oldParsedData, newParsedData);
+                    } else {
+                        preferencesProvider.setPrefLastCheckedSuccessTime(System.currentTimeMillis());
+                    }
+                    cancelNotify(1);
                 } else {
-                    preferencesProvider.setPrefLastCheckedSuccessTime(System.currentTimeMillis());
+                    if (testRealInternetConnection()) {
+                        throw new ParseException("Page is invalid", 0);
+                    } else {
+                        Log.e(TAG, "Access to internet is locked by provider");
+                        preferencesProvider.setPrefErrorType(4);
+                        preferencesProvider.setPrefErrorDetails("");
+                        notifyScheduleCheckError(4, "");
+                    }
                 }
-                cancelNotify(1);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to download file: " + PK_URL.toString(), e);
                 preferencesProvider.setPrefErrorType(2);
@@ -208,6 +222,19 @@ public class CheckChartService extends IntentService {
             connection.disconnect();
         }
 
+    }
+
+    private static boolean testRealInternetConnection() throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(TEST_URL_STRING).openConnection();
+        connection.connect();
+        try {
+            InputStream inputStream = connection.getInputStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(inputStream));
+            String value = rd.readLine();
+            return value.contains(TEST_STRING);
+        } finally {
+            connection.disconnect();
+        }
     }
 
     private boolean isOnline() {

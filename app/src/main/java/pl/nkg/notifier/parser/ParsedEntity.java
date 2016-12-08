@@ -49,4 +49,8 @@ public class ParsedEntity {
         result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
     }
+
+    public boolean validate() {
+        return url != null && date != null;
+    }
 }
