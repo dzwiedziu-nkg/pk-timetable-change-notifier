@@ -1,5 +1,7 @@
 package pl.nkg.notifier.services;
 
+import org.greenrobot.eventbus.EventBus;
+
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -22,7 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 
-import de.greenrobot.event.EventBus;
 import pl.nkg.notifier.NotifierApplication;
 import pl.nkg.notifier.PreferencesProvider;
 import pl.nkg.notifier.R;

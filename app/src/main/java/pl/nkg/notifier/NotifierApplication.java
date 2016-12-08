@@ -1,12 +1,15 @@
 package pl.nkg.notifier;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import de.greenrobot.event.EventBus;
 import pl.nkg.notifier.events.StatusUpdatedEvent;
 import pl.nkg.notifier.receivers.AlarmReceiver;
 
@@ -34,6 +37,7 @@ public class NotifierApplication extends Application {
         return pending;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(StatusUpdatedEvent event) {
         pending = event.isPending();
     }

@@ -1,5 +1,9 @@
 package pl.nkg.notifier.ui;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import de.greenrobot.event.EventBus;
 import pl.nkg.notifier.BuildConfig;
 import pl.nkg.notifier.NotifierApplication;
 import pl.nkg.notifier.PreferencesProvider;
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         fragment.setPendingStatus(application.isPending());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(StatusUpdatedEvent event) {
         update();
     }
