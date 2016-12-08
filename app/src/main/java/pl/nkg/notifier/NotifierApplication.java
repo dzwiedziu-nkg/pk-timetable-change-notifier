@@ -21,12 +21,15 @@ public class NotifierApplication extends Application {
 
     private boolean pending = false;
 
+    private PendingIntent pendingIntent;
+
     @Override
     public void onCreate() {
         super.onCreate();
         preferencesProvider = new PreferencesProvider(this);
         EventBus.getDefault().register(this);
         updateBackgroundChecker();
+        pendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(this, AlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public PreferencesProvider getPreferencesProvider() {
@@ -44,12 +47,12 @@ public class NotifierApplication extends Application {
 
     public void updateBackgroundChecker() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pending = PendingIntent.getBroadcast(this, 0, new Intent(this, AlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (preferencesProvider.isPrefEnabled()) {
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), REPEAT_TIME, pending);
+            alarmManager.cancel(pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), REPEAT_TIME, pendingIntent);
         } else {
-            alarmManager.cancel(pending);
+            alarmManager.cancel(pendingIntent);
         }
     }
 }
