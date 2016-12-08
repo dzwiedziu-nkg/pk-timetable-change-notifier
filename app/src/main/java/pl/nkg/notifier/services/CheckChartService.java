@@ -36,8 +36,10 @@ import pl.nkg.notifier.ui.MainActivity;
 public class CheckChartService extends IntentService {
 
     private final static String PK_URL_STRING = "http://www.fmi.pk.edu.pl/?page=rozklady_zajec.php&nc";
+    //private final static String PK_URL_STRING = "http://mars.iti.pk.edu.pl/~nkg/notify-test.html";
     private final static String TEST_URL_STRING = "http://mars.iti.pk.edu.pl/~nkg/connection-test.txt";
     private final static String TEST_STRING = "is connected :) hlehlehle";
+    private final static int DAY = 24 * 60 * 60 * 1000;
 
     private final static String TAG = CheckChartService.class.getSimpleName();
     private final static URL PK_URL;
@@ -79,7 +81,7 @@ public class CheckChartService extends IntentService {
             if (!isOnline()) {
                 preferencesProvider.setPrefErrorType(1);
                 preferencesProvider.setPrefErrorDetails("");
-                notifyScheduleCheckError(1, "");
+                notifyWhenLastSuccessIsTooOld(1, "");
                 emitStatusUpdated(false);
                 return;
             }
@@ -106,19 +108,19 @@ public class CheckChartService extends IntentService {
                         Log.e(TAG, "Access to internet is locked by provider");
                         preferencesProvider.setPrefErrorType(4);
                         preferencesProvider.setPrefErrorDetails("");
-                        notifyScheduleCheckError(4, "");
+                        notifyWhenLastSuccessIsTooOld(4, "");
                     }
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Unable to download file: " + PK_URL.toString(), e);
                 preferencesProvider.setPrefErrorType(2);
                 preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
-                notifyScheduleCheckError(2, e.getLocalizedMessage());
+                notifyWhenLastSuccessIsTooOld(2, e.getLocalizedMessage());
             } catch (ParseException e) {
                 Log.e(TAG, "Unable to parse downloaded file: " + PK_URL.toString(), e);
                 preferencesProvider.setPrefErrorType(3);
                 preferencesProvider.setPrefErrorDetails(e.getLocalizedMessage());
-                notifyScheduleCheckError(3, e.getLocalizedMessage());
+                notifyWhenLastSuccessIsTooOld(3, e.getLocalizedMessage());
             } finally {
                 emitStatusUpdated(false);
             }
@@ -146,6 +148,14 @@ public class CheckChartService extends IntentService {
                 content = getString(R.string.notify_content_degree_II_changed);
             }
             showNotify(title, content, R.drawable.ic_stat_changed, 0, true, Color.BLUE);
+        }
+    }
+
+    private void notifyWhenLastSuccessIsTooOld(int type, String error) {
+        if (preferencesProvider.getPrefLastCheckedSuccessTime() + DAY > System.currentTimeMillis()) {
+            notifyScheduleCheckError(0, "");
+        } else {
+            notifyScheduleCheckError(type, error);
         }
     }
 
