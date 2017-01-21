@@ -41,4 +41,7 @@
     <string name="notify_content_degree_II_changed">Schedule for informatics II degree of part-time studies was changed.</string>
     <string name="notify_title_checking">Checking if schedule was changed&#8230;</string>
     <string name="notify_content_checking">Please wait… if the schedule will be hanged I notify you.</string>
+
+    <string name="main_label_copyright" translatable="false">Copyright &#169; by Michał Niedźwiecki 2017</string>
+    <string name="main_label_web" translatable="false">https://github.com/dzwiedziu-nkg/pk-timetable-change-notifier</string>
 </resources>
