@@ -18,6 +18,9 @@
     <string name="pref_title_degree_II">II degree part-time studies</string>
     <string name="pref_description_degree_II">Schedule for: Informatics II degree on WFMiI</string>
 
+    <string name="pref_title_no_connection">No connection</string>
+    <string name="pref_description_no_connection">Notify about no connection</string>
+
     <string name="pref_cat_notify">Type of notification:</string>
     <string name="pref_title_vibration">Vibration</string>
     <string name="pref_description_vibration">Vibrate when schedule was changed</string>

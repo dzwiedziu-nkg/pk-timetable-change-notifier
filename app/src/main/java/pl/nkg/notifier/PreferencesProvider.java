@@ -14,6 +14,7 @@ public class PreferencesProvider {
     public final static String PREF_ENABLED = "enabled";
     public final static String PREF_VIBRATION = "vibration";
     public final static String PREF_SOUND = "sound";
+    public final static String PREF_NO_CONNECTION_NOTIFY = "no_connection";
     public final static String PREF_HAS_LAST_CHECKED = "has";
     public final static String PREF_LAST_CHECKED_TIME = "checked";
     public final static String PREF_LAST_CHECKED_SUCCESS_TIME = "success";
@@ -175,5 +176,13 @@ public class PreferencesProvider {
 
     public static Date longToDateOrNull(long date) {
         return date == 0 ? null : new Date(date);
+    }
+
+    public boolean isPrefNoConnectionNotify() {
+        return sharedPreferences.getBoolean(PREF_NO_CONNECTION_NOTIFY, true);
+    }
+
+    public void setPrefNoConnectionNotify(boolean notify) {
+        apply(sharedPreferences.edit().putBoolean(PREF_NO_CONNECTION_NOTIFY, notify));
     }
 }

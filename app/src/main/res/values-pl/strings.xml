@@ -24,6 +24,10 @@
     <string name="pref_title_degree_II">II stopień studiów niestacjonarnych</string>
     <string name="title_activity_main">Aktualizacje grafików PK</string>
 
+    <string name="pref_title_no_connection">Brak połączenia</string>
+    <string name="pref_description_no_connection">Powiadamiaj o problemie z połączeniem do serwera</string>
+
+
     <string-array name="error_type_array">
         <item>Brak połączenia z internetm. Nawiąż połączenie i kliknij ponownie na \"Sprawdź teraz\".</item>
         <item>Nie udało się ściągnąć grafiku ze strony PK. Być może strona jest tymczasowo niedostępna. Odczekaj chwilę i kliknij ponownie na \"Sprawdź teraz\".</item>

@@ -13,6 +13,12 @@
             android:title="@string/pref_title_degree_II"
             android:summary="@string/pref_description_degree_II"
             android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:key="no_connection"
+            android:title="@string/pref_title_no_connection"
+            android:summary="@string/pref_description_no_connection"
+            android:defaultValue="true" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_cat_notify">

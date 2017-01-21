@@ -165,10 +165,12 @@ public class CheckChartService extends IntentService {
             return;
         }
 
-        CharSequence title = getString(R.string.notify_error_title);
-        String content = getResources().getStringArray(R.array.error_type_array)[type - 1];
-        CharSequence details = error.length() == 0 ? "" : "\n\n" + error;
-        showNotify(title, content + details, R.drawable.ic_stat_notification_sync_problem, 1, false, Color.RED);
+        if (preferencesProvider.isPrefNoConnectionNotify()) {
+            CharSequence title = getString(R.string.notify_error_title);
+            String content = getResources().getStringArray(R.array.error_type_array)[type - 1];
+            CharSequence details = error.length() == 0 ? "" : "\n\n" + error;
+            showNotify(title, content + details, R.drawable.ic_stat_notification_sync_problem, 1, false, Color.RED);
+        }
     }
 
     private void notifyChecking(boolean visible) {
