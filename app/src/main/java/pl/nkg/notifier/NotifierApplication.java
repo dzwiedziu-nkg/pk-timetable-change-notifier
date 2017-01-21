@@ -28,8 +28,8 @@ public class NotifierApplication extends Application {
         super.onCreate();
         preferencesProvider = new PreferencesProvider(this);
         EventBus.getDefault().register(this);
-        updateBackgroundChecker();
         pendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(this, AlarmReceiver.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        updateBackgroundChecker();
     }
 
     public PreferencesProvider getPreferencesProvider() {
