@@ -14,8 +14,8 @@ public class WebParser {
 
     private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl", "PL"));
     private final static String PARSE_START_TAG = "<b>STUDIA NIESTACJONARNE</b>";
-    private final static String PARSE_STAGE_I_TAG = "Kierunek: <i>Informatyka I stopień";
-    private final static String PARSE_STAGE_II_TAG = "Kierunek: <i>Informatyka II stopień";
+    private final static String PARSE_STAGE_I_TAG = "Kierunek: <i>Informatyka I stopień i II stopień";
+    private final static String PARSE_STAGE_II_TAG = "Kierunek: <i>Informatyka I stopień i II stopień";
 
     public ParsedData parse(BufferedReader reader) throws IOException, ParseException {
         String line;
