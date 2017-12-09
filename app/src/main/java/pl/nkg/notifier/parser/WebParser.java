@@ -16,6 +16,7 @@ public class WebParser {
     private final static String PARSE_START_TAG = "<b>STUDIA NIESTACJONARNE</b>";
     private final static String PARSE_STAGE_I_TAG = "Kierunek: <i>Informatyka I stopień";
     private final static String PARSE_STAGE_II_TAG = "Kierunek: <i>Informatyka II stopień";
+    private final static String PARSE_STAGE_III_TAG = "Kierunek: <i>Informatyka I stopień i II stopień";
 
     public ParsedData parse(BufferedReader reader) throws IOException, ParseException {
         String line;
@@ -38,6 +39,9 @@ public class WebParser {
                     } else if (line.contains(PARSE_STAGE_II_TAG)) {
                         parsedData.setSecondStage(parseLine(line));
                         done |= 2;
+                    } else if (line.contains(PARSE_STAGE_III_TAG)) {
+                        parsedData.setThirdStage(parseLine(line));
+                        done = 3;
                     }
             }
         }
