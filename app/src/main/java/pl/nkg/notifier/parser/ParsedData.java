@@ -4,6 +4,7 @@ public class ParsedData {
 
     private ParsedEntity firstStage;
     private ParsedEntity secondStage;
+    private ParsedEntity thirdStage;
 
     public ParsedEntity getFirstStage() {
         return firstStage;
@@ -11,6 +12,10 @@ public class ParsedData {
 
     public ParsedEntity getSecondStage() {
         return secondStage;
+    }
+
+    public ParsedEntity getThirdStage() {
+        return thirdStage;
     }
 
     public void setFirstStage(ParsedEntity firstStage) {
@@ -21,6 +26,10 @@ public class ParsedData {
         this.secondStage = secondStage;
     }
 
+    public void setSecondStage(ParsedEntity secondStage) {
+        this.thirdStage = thirdStage;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,9 +37,11 @@ public class ParsedData {
 
         ParsedData that = (ParsedData) o;
 
-        if (firstStage != null ? !firstStage.equals(that.firstStage) : that.firstStage != null)
+        if (this.checkStage(firstStage, that.firstStage))
             return false;
-        return !(secondStage != null ? !secondStage.equals(that.secondStage) : that.secondStage != null);
+        if (this.checkStage(secondStage, that.secondStage))
+            return false;
+        return !this.checkStage(thirdStage, that.thirdStage);
 
     }
 
@@ -42,6 +53,12 @@ public class ParsedData {
     }
 
     public boolean validate() {
-        return firstStage != null && secondStage != null && firstStage.validate() && secondStage.validate();
+        return (firstStage != null && secondStage != null && firstStage.validate() && secondStage.validate())
+                || thirdStage != null && thirdStage.validate();
+    }
+
+    private boolean checkStage(ParsedEntity stage, ParsedEntity thatStage) {
+        return stage!= null ? !stage.equals(thatStage) : thatStage != null;
     }
 }
+
